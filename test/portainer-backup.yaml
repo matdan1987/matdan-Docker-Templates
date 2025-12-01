@@ -1,0 +1,20 @@
+services:
+  portainer-backup:
+    image: dockurr/portainer-backup
+    container_name: portainer-backup
+    command: schedule
+    environment:
+      TZ: "America/New_York"
+      PORTAINER_BACKUP_URL: "http://portainer:9000"
+      PORTAINER_BACKUP_TOKEN: "PORTAINER_ACCESS_TOKEN"
+      PORTAINER_BACKUP_PASSWORD: ""
+      PORTAINER_BACKUP_OVERWRITE: 1
+      PORTAINER_BACKUP_SCHEDULE: "0 0 0 * * *"
+      PORTAINER_BACKUP_STACKS: 1
+      PORTAINER_BACKUP_DRYRUN: 0
+      PORTAINER_BACKUP_CONCISE: 1
+      PORTAINER_BACKUP_DIRECTORY: "/backup"
+      PORTAINER_BACKUP_FILENAME: "portainer-backup.tar.gz"
+    volumes:
+      - ./backup:/backup
+    restart: always
