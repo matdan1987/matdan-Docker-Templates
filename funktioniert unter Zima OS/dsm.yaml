@@ -1,0 +1,49 @@
+name: dsm
+services:
+  dsm:
+    cpu_shares: 90
+    command: []
+    container_name: dsm
+    deploy:
+      resources:
+        limits:
+          memory: 8324845568
+        reservations:
+          devices: []
+    environment:
+      - DISK_SIZE=256G
+      - KVM=N
+      - RAM_SIZE=8G
+    image: vdsm/virtual-dsm:latest
+    labels:
+      icon: https://icon.casaos.io/main/all/dsm.png
+    ports:
+      - target: 5000
+        published: "5000"
+        protocol: tcp
+      - target: 5001
+        published: "5001"
+        protocol: tcp
+    privileged: true
+    restart: unless-stopped
+    stop_grace_period: 2m0s
+    volumes:
+      - type: bind
+        source: /DATA/AppData/dsm/storage
+        target: /storage
+    devices: []
+    cap_add: []
+    network_mode: bridge
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: https://icon.casaos.io/main/all/dsm.png
+  index: /
+  is_uncontrolled: false
+  port_map: "5000"
+  scheme: http
+  store_app_id: dsm
+  title:
+    custom: ""
+    en_us: dsm
