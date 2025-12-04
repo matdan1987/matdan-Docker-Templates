@@ -1,0 +1,28 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+    ports:
+      - 9000:9000
+      - 9443:9443
+      - 8000:8000
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /DATA/AppData/portainer/data:/data
+
+    environment:
+      TZ: Europe/Berlin
+      # optional, wenn du weiterhin über deine Domain gehst:
+      TRUSTED_ORIGINS: zimaos-portainer.matdan-srv.com
+
+    # Wichtig: hier kommt die templates-Flag ins Spiel
+    command:
+      - --host
+      - unix:///var/run/docker.sock
+      - --templates
+      - https://portainertemplates.matdan.de/v2/templates.json
