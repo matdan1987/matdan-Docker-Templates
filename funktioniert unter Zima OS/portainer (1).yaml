@@ -1,0 +1,64 @@
+name: portainer
+services:
+  portainer:
+    cpu_shares: 90
+    command:
+      - --host
+      - unix:///var/run/docker.sock
+    container_name: portainer
+    deploy:
+      resources:
+        limits:
+          memory: 8324845568
+        reservations:
+          devices: []
+    environment:
+      - TRUSTED_ORIGINS=zimaos-portainer.matdan-srv.com
+      - TZ=Europe/Berlin
+    image: portainer/portainer-ce:latest
+    ports:
+      - mode: ingress
+        target: 9000
+        published: "9000"
+        protocol: tcp
+      - mode: ingress
+        target: 9443
+        published: "9443"
+        protocol: tcp
+      - mode: ingress
+        target: 8000
+        published: "8000"
+        protocol: tcp
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        bind:
+          create_host_path: true
+      - type: bind
+        source: /DATA/AppData/portainer/data
+        target: /data
+        bind:
+          create_host_path: true
+    devices: []
+    cap_add: []
+    networks:
+      - default
+    privileged: false
+networks:
+  default:
+    name: portainer_default
+x-casaos:
+  author: self
+  category: self
+  hostname: ""
+  icon: ""
+  index: /
+  is_uncontrolled: false
+  port_map: "9000"
+  scheme: http
+  title:
+    custom: portainer
